@@ -3,9 +3,11 @@ import Screen from "./engine/Screen.js";
 import PixelManipulation from "./Pixel.js";
 class Particle {
     constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.speed = Math.random() * 5;
+        this.x = width /2;
+        //Math.random() * width;
+        this.y = height / 2;
+        //Math.random() * height;
+        this.speed = Math.random() * maxSpeed;
     }
     update(time = 1) {
         this.x += time * this.speed * Math.sin(directions[Math.floor(this.x) + width * Math.floor(this.y)]);
@@ -50,16 +52,16 @@ const get2D = (data, scalar = 1.4) => {
     }
 }
 
-const wait = 1000;
+const wait = 100;
 const doFirst = () => {
     for(let index = 0; index < width * height; index++) {
-        noise2D[index] = Math.random() * 5;
+        noise2D[index] = Math.random() * maxSpeed;
     }
+    for(let i = 0; i < total; i++) particles[i].speed = Math.random() * 5;
     setTimeout(() => doSecond(), wait);
 };
 
 const doSecond = () => {
-    for(let i = 0; i < total; i++) particles[i].speed = Math.random() * 5;
     setTimeout(() => doThird(), wait);
 };
 
@@ -85,6 +87,7 @@ const pixels = new PixelManipulation(screen.canvas);
 const framerate = document.querySelector(".framerate");
 let lastTime = 0;
 let currentTime = Date.now();
+const maxSpeed = 10;
 
 for(let i = 0; i < width; i++) {
     for(let j = 0; j < height; j++) noise2D[i + width * j] = Math.random();
