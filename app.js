@@ -50,20 +50,16 @@ const get2D = (data, scalar = 1.4) => {
     }
 }
 
-const wait = 1000;
+const wait = 1500;
 const doFirst = () => {
-    for(let i = 0; i < width; i++) {
-        for(let j = 0; j < height; j++) noise2D[i + width * j] = Math.random();        
+    for(let index = 0; index < width * height; index++) {
+        noise2D[index] = Math.random();
+        particles[index].speed = Math.random() * 5;
     }
     setTimeout(() => doSecond(), wait);
 };
 
 const doSecond = () => {
-    for(let index = 0; index < width * height; index++)
-    particles[index].speed = Math.random() * 5;
-};
-
-const doThird = () => {
     get2D(noise2D);
     setTimeout(() => doFirst(), wait);
 }
