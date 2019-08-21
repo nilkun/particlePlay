@@ -27,12 +27,13 @@ const get2D = (data, scalar = 1.4) => {
             let scaleAcc = 0;
             for(let octave = 0; octave < octaves; octave++){
                 let pitch = width >> octave;
+                let pitch2 = height >> octave;
 
                 let sampleX1 = Math.floor(x / pitch) * pitch;
-                let sampleY1 = Math.floor(y / pitch) * pitch;
+                let sampleY1 = Math.floor(Math.floor(y / pitch2) * pitch2);
 
                 let sampleX2 = (sampleX1 + pitch) % width;
-                let sampleY2 = (sampleY1 + pitch) % height;
+                let sampleY2 = Math.floor(sampleY1 + pitch2) % height;
 
                 const blendX = (x - sampleX1) / pitch;
                 const blendY = (y - sampleY1) / pitch;
@@ -49,17 +50,23 @@ const get2D = (data, scalar = 1.4) => {
     }
 }
 
+const wait = 1000;
 const doFirst = () => {
     for(let i = 0; i < width; i++) {
         for(let j = 0; j < height; j++) noise2D[i + width * j] = Math.random();        
     }
-    setTimeout(() => doSecond(), 1500);
+    setTimeout(() => doSecond(), wait);
 };
 
 const doSecond = () => {
-    get2D(noise2D);
-    setTimeout(() => doFirst(), 1500);
+    for(let index = 0; index < width * height; index++)
+    particles[index].speed = Math.random() * 5;
 };
+
+const doThird = () => {
+    get2D(noise2D);
+    setTimeout(() => doFirst(), wait);
+}
 
 const updateTime = () => {
     lastTime = currentTime;
