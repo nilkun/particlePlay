@@ -50,19 +50,23 @@ const get2D = (data, scalar = 1.4) => {
     }
 }
 
-const wait = 1500;
+const wait = 1000;
 const doFirst = () => {
     for(let index = 0; index < width * height; index++) {
-        noise2D[index] = Math.random();
-        particles[index].speed = Math.random() * 5;
+        noise2D[index] = Math.random() * 5;
     }
     setTimeout(() => doSecond(), wait);
 };
 
 const doSecond = () => {
+    for(let i = 0; i < total; i++) particles[i].speed = Math.random() * 5;
+    setTimeout(() => doThird(), wait);
+};
+
+const doThird = () => {    
     get2D(noise2D);
     setTimeout(() => doFirst(), wait);
-}
+};
 
 const updateTime = () => {
     lastTime = currentTime;
@@ -87,7 +91,8 @@ for(let i = 0; i < width; i++) {
 }
 get2D(noise2D);
 
-const particles = new Array(50000);
+const total = 50000;
+const particles = new Array(total);
 for(let i = 0; i < particles.length; i++) particles[i] = new Particle;
 
 const overlay = document.createElement("canvas");
